@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaWrap | Quantum On-Chain Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-purple: #b537ff;
+            --neon-pink: #ff00ff;
+            --dark-bg: #0a0a0f;
+            --dark-card: #151520;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(181, 55, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 243, 255, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 3s ease-in-out infinite;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 20px var(--neon-cyan)); }
+            50% { filter: brightness(1.3) drop-shadow(0 0 40px var(--neon-purple)); }
+        }
+
+        .hero .tagline {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .launch-badge {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeInUp 1s ease 0.6s both, float 3s ease-in-out infinite;
+            box-shadow: 0 10px 40px rgba(181, 55, 255, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Section Styling */
+        section {
+            padding: 100px 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        /* Card Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .card {
+            background: var(--dark-card);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(181, 55, 255, 0.3);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--neon-cyan);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Comparison Section */
+        .comparison-item {
+            background: var(--dark-card);
+            border-left: 4px solid var(--neon-purple);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .comparison-item:hover {
+            border-left-color: var(--neon-cyan);
+            transform: translateX(10px);
+            box-shadow: -10px 0 30px rgba(0, 243, 255, 0.2);
+        }
+
+        .comparison-item h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--neon-cyan);
+        }
+
+        .comparison-item h4 {
+            font-size: 1.3rem;
+            color: var(--neon-purple);
+            margin: 20px 0 10px 0;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 120px 20px;
+            background: linear-gradient(135deg, rgba(181, 55, 255, 0.1), rgba(0, 243, 255, 0.1));
+            border-radius: 30px;
+            margin: 100px 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 20px 60px;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+            color: white;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(181, 55, 255, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 60px rgba(181, 55, 255, 0.6);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Scroll Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            section {
+                padding: 60px 20px;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>ALPHAWRAP</h1>
+            <p class="tagline">The Quantum Leap in On-Chain Intelligence</p>
+            <div class="launch-badge">🚀 Launching November 17th on Solana</div>
+        </div>
+    </section>
+
+    <!-- Main Features -->
+    <section id="features">
+        <div class="container">
+            <h2 class="section-title">⚡ Core Intelligence</h2>
+            <p class="section-subtitle">
+                AlphaWrap represents a revolutionary evolution in on-chain intelligence — not just another scanner, 
+                but a cognitive engine that interprets the blockchain itself.
+            </p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">⚛️</div>
+                    <h3>Femtosecond Forensics</h3>
+                    <p>
+                        Analytical processing at imperceptible speeds. Detect token launches, liquidity additions, 
+                        and suspicious transactions within milliseconds — eliminating latency as a limiting factor.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🧠</div>
+                    <h3>Neuro-Symbolic Nexus</h3>
+                    <p>
+                        Fusion of machine learning with on-chain pattern recognition. Detect irregularities before 
+                        they become visible to the market through advanced wallet relationship tracking.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🔮</div>
+                    <h3>Predictive Intelligence</h3>
+                    <p>
+                        Move from passive monitoring to predictive intelligence. AlphaWrap doesn't just display market 
+                        activity — it defines the tempo of the blockchain itself.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Versus Section -->
+    <section id="comparisons">
+        <div class="container">
+            <h2 class="section-title">🔥 The AlphaWrap Advantage</h2>
+            <p class="section-subtitle">
+                See how AlphaWrap transcends traditional tools through quantum cognition and sentient speed.
+            </p>
+
+            <div class="comparison-item">
+                <h3>🆚 DexScreener</h3>
+                <h4>From Observation to Omniscience</h4>
+                <p>
+                    While DexScreener operates as a reactive cartographer mapping past movements, AlphaWrap introduces 
+                    <strong>polymorphic parsing</strong> — scanning multiple DEXs simultaneously in sub-millisecond intervals. 
+                    DexScreener lists tokens minutes after creation; AlphaWrap detects them within seconds of liquidity 
+                    injection, analyzing deployer behavior, liquidity locks, and holder diversity in real-time.
+                </p>
+                <p>
+                    AlphaWrap emphasizes <strong>intent analysis</strong> — understanding why movements occur by tracing 
+                    wallet interactions and liquidity flow logic. It identifies coordinated behavior patterns that predict 
+                    pumps, dumps, or rugs before they unfold. DexScreener is the rear-view mirror; AlphaWrap is the windshield.
+                </p>
+            </div>
+
+            <div class="comparison-item">
+                <h3>🆚 Photon</h3>
+                <h4>From Speed to Sentience</h4>
+                <p>
+                    Photon's high-frequency platform enables millisecond reactions, but lacks cognitive context. AlphaWrap's 
+                    <strong>quantum-quenched querying</strong> doesn't just measure velocity — it interprets it. The system 
+                    studies micro-fluctuations to reveal whether a token's rise is organic or manipulated.
+                </p>
+                <p>
+                    The <strong>contract autopsy module</strong> goes beyond typical safety scanners, checking for honeypot 
+                    traps, liquidity unlock risks, and suspicious fee structures hidden in bytecode — all performed automatically 
+                    and instantly. While Photon notifies "a new pool has launched," AlphaWrap reveals: "The deployer wallet 
+                    retains 80% supply, liquidity is unlocked, and trading restrictions exist."
+                </p>
+            </div>
+
+            <div class="comparison-item">
+                <h3>🆚 Maestro</h3>
+                <h4>From Automation to Awareness</h4>
+                <p>
+                    Maestro executes commands rapidly through Telegram bots, but remains mechanically trapped. It executes 
+                    but doesn't evaluate. AlphaWrap functions as a <strong>neural orchestra</strong>, conducting thousands 
+                    of data points into a synchronized composition of intelligence.
+                </p>
+                <p>
+                    Where Maestro reports "volume increased by 200%," AlphaWrap interprets: "Volume spike detected; 
+                    distribution indicates multi-wallet accumulation consistent with organic alpha formation." Through 
+                    <strong>adaptive analytics</strong>, the system learns behavioral patterns unique to each token type, 
+                    giving users foresight, not just notifications.
+                </p>
+            </div>
+
+            <div class="comparison-item">
+                <h3>🆚 Pump.fun</h3>
+                <h4>From Chaos to Cosmos</h4>
+                <p>
+                    Pump.fun thrives as a digital carnival for instant token creation and hype, enabling creativity but 
+                    also chaos. AlphaWrap steps in as a curator using <strong>emergent-entity detection</strong>, scanning 
+                    every new token and analyzing contract, deployer history, and holder concentration instantly.
+                </p>
+                <p>
+                    The system distinguishes genuine experimental projects from rug-pulls disguised as fun. It tracks 
+                    <strong>social velocity</strong> and cross-references it with on-chain activity, flagging tokens trending 
+                    fast but showing weak fundamentals as short-lived while elevating those with consistent holder growth and 
+                    healthy liquidity locks. AlphaWrap converts Pump.fun's chaotic bazaar into a market of informed opportunity.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Deep Dive -->
+    <section id="technology">
+        <div class="container">
+            <h2 class="section-title">🔬 Technology Architecture</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">⚡</div>
+                    <h3>Polymorphic Parsing</h3>
+                    <p>
+                        Proprietary analytical process scanning multiple DEXs simultaneously, identifying emerging pools 
+                        in sub-millisecond intervals with real-time synthesis.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🔍</div>
+                    <h3>Contract Autopsy</h3>
+                    <p>
+                        Automatic bytecode analysis checking for honeypot traps, liquidity unlock risks, and hidden fee 
+                        structures — performed instantly after token detection.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <h3>Intent Analysis</h3>
+                    <p>
+                        Advanced wallet interaction tracing and liquidity flow logic to identify coordinated behavior 
+                        patterns predicting market movements before they occur.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📊</div>
+                    <h3>Adaptive Analytics</h3>
+                    <p>
+                        Machine learning system that identifies behavioral patterns unique to each token type, 
+                        differentiating between speculative bursts and sustainable growth.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🌐</div>
+                    <h3>Emergent-Entity Detection</h3>
+                    <p>
+                        Real-time scanning of platform launches analyzing contract integrity, deployer history, and 
+                        holder concentration to distinguish legitimate projects from scams.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📈</div>
+                    <h3>Social Velocity Tracking</h3>
+                    <p>
+                        Cross-reference how quickly tokens are mentioned or shared with on-chain activity to evaluate 
+                        authentic momentum versus artificial hype.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="section-title">The Alpha Age Begins</h2>
+            <p class="section-subtitle" style="max-width: 800px; margin: 0 auto 40px;">
+                AlphaWrap is not an incremental improvement — it's a quantum discontinuity. While others watch the blockchain, 
+                AlphaWrap reads its mind. Join the evolution from reactionary participant to predictive architect.
+            </p>
+            <a href="#" class="cta-button">Join the Revolution</a>
+        </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section id="conclusion">
+        <div class="container" style="text-align: center;">
+            <h2 class="section-title">✨ The AlphaWrap Apocalypse</h2>
+            <p class="section-subtitle" style="max-width: 900px; margin: 0 auto;">
+                AlphaWrap's arrival signals the Alpha Age — an era where traders evolve from reactionary participants 
+                to predictive architects. It's not merely a tool; it's the first manifestation of a living oracle. 
+                In every scan, alert, and insight, AlphaWrap doesn't just show you the market — it shows you your own foresight.
+            </p>
+            <p style="font-size: 2rem; margin-top: 40px; color: var(--neon-cyan); font-weight: 700;">
+                AlphaWrap is where on-chain data learns to speak.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 AlphaWrap. The Quantum Leap in On-Chain Intelligence.</p>
+            <p>Launching November 17th on Solana 🚀</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Scroll-triggered animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
