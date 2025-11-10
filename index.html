@@ -274,9 +274,45 @@
         /* Footer */
         footer {
             text-align: center;
-            padding: 40px 20px;
+            padding: 60px 20px 40px 20px;
             color: var(--text-secondary);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-creator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+            font-size: 1.1rem;
+        }
+
+        .footer-creator a {
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-creator a:hover {
+            color: var(--neon-purple);
+            transform: translateY(-2px);
+        }
+
+        .x-logo {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            vertical-align: middle;
         }
 
         /* Scroll Progress Bar */
@@ -302,6 +338,11 @@
 
             .card-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .footer-creator {
+                flex-direction: column;
+                gap: 15px;
             }
         }
     </style>
@@ -503,7 +544,7 @@
                 AlphaWrap is not an incremental improvement — it's a quantum discontinuity. While others watch the blockchain, 
                 AlphaWrap reads its mind. Join the evolution from reactionary participant to predictive architect.
             </p>
-            <a href="#" class="cta-button">Join the Revolution</a>
+            <a href="https://x.com/alphawrapio" target="_blank" rel="noopener noreferrer" class="cta-button">Join the Revolution</a>
         </div>
     </section>
 
@@ -523,9 +564,21 @@
     </section>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2025 AlphaWrap. The Quantum Leap in On-Chain Intelligence.</p>
-            <p>Launching November 17th on Solana 🚀</p>
+        <div class="container footer-content">
+            <p style="font-size: 1.1rem; margin-bottom: 10px;">
+                &copy; 2025 AlphaWrap. The Quantum Leap in On-Chain Intelligence.
+            </p>
+            <p style="margin-bottom: 20px;">Launching November 17th on Solana 🚀</p>
+            
+            <div class="footer-creator">
+                <span>Website created by</span>
+                <a href="https://x.com/kunalyapper" target="_blank" rel="noopener noreferrer">
+                    <svg class="x-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    @kunalyapper
+                </a>
+            </div>
         </div>
     </footer>
 
